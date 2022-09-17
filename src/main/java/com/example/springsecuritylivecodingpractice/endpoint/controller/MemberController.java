@@ -16,24 +16,23 @@ import com.example.springsecuritylivecodingpractice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
 	private final MemberService memberService;
 
-	@GetMapping("/{id}")
+	@GetMapping("/api/member/{id}")
 	public ResponseEntity<MemberResponse> retrieveMember(@PathVariable Long id) {
 		return ResponseEntity.ok(memberService.retrieveMember(id));
 	}
 
-	@GetMapping("/me")
+	@GetMapping("/api/me")
 	public ResponseEntity<MemberResponse> retrieveMyInfo() {
 		Long id = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(memberService.retrieveMember(id));
 	}
 
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<MemberResponse> register(@RequestBody MemberRegisterRequest req) {
 		return ResponseEntity.ok(memberService.register(req));
 	}
