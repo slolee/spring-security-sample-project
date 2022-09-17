@@ -1,7 +1,5 @@
 package com.example.springsecuritylivecodingpractice.security.login;
 
-import javax.transaction.NotSupportedException;
-
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

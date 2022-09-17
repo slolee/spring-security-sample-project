@@ -1,12 +1,9 @@
 package com.example.springsecuritylivecodingpractice.helper;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -42,11 +39,11 @@ public class JwtHelper {
 		}
 	}
 
-	public static boolean validateJwt(String jwtToken) {
+	public static boolean validateJwt(String jwtToken) throws RuntimeException {
 		return Jwts.parser().setSigningKey(secretKey).isSigned(jwtToken);
 	}
 
-	public static <T> T getClaim(String jwtToken, Function<Claims, T> func) {
+	public static <T> T getClaim(String jwtToken, Function<Claims, T> func) throws RuntimeException {
 		Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody();
 		return func.apply(claims);
 	}

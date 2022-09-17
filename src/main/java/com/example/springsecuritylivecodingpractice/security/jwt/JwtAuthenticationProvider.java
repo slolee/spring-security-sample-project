@@ -20,10 +20,14 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 		JwtAuthenticationToken beforeToken = (JwtAuthenticationToken) authentication;
 		String accessToken = beforeToken.getAccessToken();
 
-		if (!JwtHelper.validateJwt(accessToken)) {
-			throw new CustomAuthenticationException("잘못된 AccessToken 입니다.");
+		try {
+			if (!JwtHelper.validateJwt(accessToken)) {
+				throw new CustomAuthenticationException("Invalid AccessToken!");
+			}
+			return JwtAuthenticationToken.afterOf(Long.valueOf(JwtHelper.getClaim(accessToken, Claims::getSubject)));
+		} catch (RuntimeException ex) {
+			throw new CustomAuthenticationException("Invalid AccessToken!");
 		}
-		return JwtAuthenticationToken.afterOf(Long.valueOf(JwtHelper.getClaim(accessToken, Claims::getSubject)));
 	}
 
 	@Override

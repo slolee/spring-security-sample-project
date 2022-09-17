@@ -20,7 +20,7 @@ public class MemberService {
 	public MemberResponse retrieveMember(Long id) {
 		return memberRepository.findById(id)
 			.map(MemberResponse::of)
-			.orElseThrow(() -> new RuntimeException("해당 회원정보를 찾을 수 없습니다."));
+			.orElseThrow(() -> new RuntimeException("Not Found Member!"));
 	}
 
 	public MemberResponse register(MemberRegisterRequest req) {
@@ -37,7 +37,7 @@ public class MemberService {
 	public Member validate(String email, String password) throws RuntimeException {
 		return memberRepository.findByEmail(email)
 			.filter(member -> encoder.matches(password, member.getPassword()))
-			.orElseThrow(() -> new RuntimeException("해당 회원정보를 찾을 수 없습니다."));
+			.orElseThrow(() -> new RuntimeException("Not Found Member!"));
 	}
 
 }
