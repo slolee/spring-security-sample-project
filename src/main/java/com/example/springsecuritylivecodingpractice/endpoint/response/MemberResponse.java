@@ -1,6 +1,6 @@
 package com.example.springsecuritylivecodingpractice.endpoint.response;
 
-import com.example.springsecuritylivecodingpractice.model.Member;
+import com.example.springsecuritylivecodingpractice.entity.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

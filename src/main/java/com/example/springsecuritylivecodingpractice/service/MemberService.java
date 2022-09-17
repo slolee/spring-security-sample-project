@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.springsecuritylivecodingpractice.endpoint.request.MemberRegisterRequest;
 import com.example.springsecuritylivecodingpractice.endpoint.response.MemberResponse;
-import com.example.springsecuritylivecodingpractice.model.Member;
+import com.example.springsecuritylivecodingpractice.entity.Member;
 import com.example.springsecuritylivecodingpractice.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
