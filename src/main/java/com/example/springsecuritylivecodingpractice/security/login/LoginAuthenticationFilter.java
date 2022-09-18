@@ -1,11 +1,9 @@
 package com.example.springsecuritylivecodingpractice.security.login;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +16,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 
 import com.example.springsecuritylivecodingpractice.endpoint.request.LoginRequest;
 import com.example.springsecuritylivecodingpractice.helper.JwtHelper;
-import com.example.springsecuritylivecodingpractice.helper.JwtType;
-import com.example.springsecuritylivecodingpractice.security.exception.CustomAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
@@ -41,8 +37,8 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication authResult) throws IOException {
 		LoginAuthenticationToken afterToken = (LoginAuthenticationToken) authResult;
 
-		String accessToken = JwtHelper.generateJwt(afterToken.getId(), JwtType.ACCESS_TOKEN);
-		String refreshToken = JwtHelper.generateJwt(afterToken.getId(), JwtType.REFRESH_TOKEN);
+		String accessToken = JwtHelper.generateAccessToken(afterToken.getId(), afterToken.getAuthorities());
+		String refreshToken = JwtHelper.generateRefreshToken(afterToken.getId());
 
 		res.addCookie(
 			createCookie("refresh_token", refreshToken, JwtHelper.getClaim(refreshToken, Claims::getExpiration))

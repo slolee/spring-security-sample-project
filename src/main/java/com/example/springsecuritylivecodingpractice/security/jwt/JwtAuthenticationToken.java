@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import com.example.springsecuritylivecodingpractice.entity.Member;
+
 public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken {
 
 	private JwtAuthenticationToken(Object principal, Object credentials) {
@@ -19,8 +21,8 @@ public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken 
 		return new JwtAuthenticationToken(accessToken, "");
 	}
 
-	public static JwtAuthenticationToken afterOf(Long memberId) {
-		return new JwtAuthenticationToken(memberId, "", List.of());
+	public static JwtAuthenticationToken afterOf(Member member) {
+		return new JwtAuthenticationToken(member.getId(), "", List.of(member.getRole()));
 	}
 
 	public String getAccessToken() {

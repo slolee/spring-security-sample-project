@@ -1,6 +1,7 @@
 package com.example.springsecuritylivecodingpractice.security.jwt;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import com.example.springsecuritylivecodingpractice.security.exception.CustomAuthenticationException;
+
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	public static final String HEADER_PREFIX = "Bearer ";
@@ -24,7 +27,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
-		String accessToken = req.getHeader("Authorization").substring(HEADER_PREFIX.length());
+		String accessToken = Optional.ofNullable(req.getHeader("Authorization"))
+			.map(token -> token.substring(HEADER_PREFIX.length()))
+			.orElseThrow(() -> new CustomAuthenticationException("Not Found AccessToken!"));
+
 		JwtAuthenticationToken beforeToken = JwtAuthenticationToken.beforeOf(accessToken);
 		return super.getAuthenticationManager().authenticate(beforeToken);
 	}

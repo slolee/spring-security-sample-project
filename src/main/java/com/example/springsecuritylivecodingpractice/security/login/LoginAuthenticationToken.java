@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 
 import com.example.springsecuritylivecodingpractice.endpoint.request.LoginRequest;
+import com.example.springsecuritylivecodingpractice.entity.Member;
 
 public class LoginAuthenticationToken extends UsernamePasswordAuthenticationToken {
 
@@ -22,8 +23,8 @@ public class LoginAuthenticationToken extends UsernamePasswordAuthenticationToke
 		return new LoginAuthenticationToken(req.getEmail(), req.getPassword());
 	}
 
-	public static LoginAuthenticationToken afterOf(Long memberId) {
-		return new LoginAuthenticationToken(memberId, "", List.of());
+	public static LoginAuthenticationToken afterOf(Member member) {
+		return new LoginAuthenticationToken(member.getId(), "", List.of(member.getRole()));
 	}
 
 	public String getEmail() {

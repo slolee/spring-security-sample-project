@@ -1,9 +1,15 @@
 package com.example.springsecuritylivecodingpractice.helper;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+
+import com.example.springsecuritylivecodingpractice.security.login.LoginAuthenticationToken;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,28 +21,26 @@ public class JwtHelper {
 	private static final int REFRESH_TOKEN_VALIDITY = 24 * 60 * 60 * 1000; // 1 Days
 	private static final String secretKey = "ch4njun";
 
-	public static String generateJwt(Long id, JwtType type) {
+	public static String generateAccessToken(Long id, Collection<? extends GrantedAuthority> authorities) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("jwt_type", type.name());
+		claims.put("authorities", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
 
 		return Jwts.builder()
 			.setClaims(claims)
 			.setSubject(id.toString())
 			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(generateValidity(type))
+			.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY))
 			.signWith(SignatureAlgorithm.HS512, secretKey)
 			.compact();
 	}
 
-	public static Date generateValidity(JwtType type) {
-		switch (type) {
-			case ACCESS_TOKEN:
-				return new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY);
-			case REFRESH_TOKEN:
-				return new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY);
-			default:
-				return null;
-		}
+	public static String generateRefreshToken(Long id) {
+		return Jwts.builder()
+			.setSubject(id.toString())
+			.setIssuedAt(new Date(System.currentTimeMillis()))
+			.setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY))
+			.signWith(SignatureAlgorithm.HS512, secretKey)
+			.compact();
 	}
 
 	public static boolean validateJwt(String jwtToken) throws RuntimeException {

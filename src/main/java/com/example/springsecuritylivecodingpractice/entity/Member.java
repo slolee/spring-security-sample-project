@@ -29,12 +29,16 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	private MemberType type = MemberType.GENERAL;
 
+	@Enumerated(EnumType.STRING)
+	private MemberRole role = MemberRole.UNCERTIFIED;
+
 	@Builder
-	public Member(String email, String password, String nickname, MemberType type) {
+	public Member(String email, String password, String nickname, MemberType type, MemberRole role) {
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
 		this.type = type;
+		this.role = role;
 	}
 
 }

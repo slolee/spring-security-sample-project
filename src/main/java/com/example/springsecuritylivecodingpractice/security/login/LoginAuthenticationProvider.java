@@ -23,7 +23,7 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 
 		try {
 			Member member = memberService.validate(beforeToken.getEmail(), beforeToken.getPassword());
-			return LoginAuthenticationToken.afterOf(member.getId());
+			return LoginAuthenticationToken.afterOf(member);
 		} catch (RuntimeException ex) {
 			throw new CustomAuthenticationException(ex);
 		}
