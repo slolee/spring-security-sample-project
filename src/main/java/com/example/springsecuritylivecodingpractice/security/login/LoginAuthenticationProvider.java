@@ -25,6 +25,7 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 			Member member = memberService.validate(beforeToken.getEmail(), beforeToken.getPassword());
 			return LoginAuthenticationToken.afterOf(member);
 		} catch (RuntimeException ex) {
+			ex.printStackTrace();
 			throw new CustomAuthenticationException(ex);
 		}
 	}

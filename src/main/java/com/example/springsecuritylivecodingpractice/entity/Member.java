@@ -27,10 +27,10 @@ public class Member {
 	private String nickname;
 
 	@Enumerated(EnumType.STRING)
-	private MemberType type = MemberType.GENERAL;
+	private MemberType type;
 
 	@Enumerated(EnumType.STRING)
-	private MemberRole role = MemberRole.UNCERTIFIED;
+	private MemberRole role;
 
 	@Builder
 	public Member(String email, String password, String nickname, MemberType type, MemberRole role) {

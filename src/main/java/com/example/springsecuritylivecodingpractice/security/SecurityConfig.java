@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.springsecuritylivecodingpractice.security.exception.handler.CustomAccessDeniedHandler;
 import com.example.springsecuritylivecodingpractice.security.exception.handler.CustomAuthenticationEntryPoint;
 import com.example.springsecuritylivecodingpractice.security.jwt.JwtAuthenticationFilter;
 import com.example.springsecuritylivecodingpractice.security.jwt.JwtAuthenticationProvider;
@@ -28,11 +29,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String[] AUTH_WHITELIST_GUEST = {"/", "/csrf", "/error", "/login", "/register", "/oauth2/**"};
-
 	private final LoginAuthenticationProvider loginAuthenticationProvider;
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
 	private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+	private final CustomAccessDeniedHandler accessDeniedHandler;
 
 	@Bean
 	public AuthenticationManager authenticationManager() throws Exception {
@@ -76,6 +76,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+			.and()
+			.exceptionHandling()
+			.accessDeniedHandler(accessDeniedHandler)
 
 			.and()
 			.addFilterBefore(this.loginFilter(), UsernamePasswordAuthenticationFilter.class)

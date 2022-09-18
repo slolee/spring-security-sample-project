@@ -10,4 +10,5 @@ public enum MemberRole implements GrantedAuthority {
 	public String getAuthority() {
 		return this.name();
 	}
+
 }

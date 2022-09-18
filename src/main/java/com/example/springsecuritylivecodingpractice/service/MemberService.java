@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.example.springsecuritylivecodingpractice.endpoint.request.MemberRegisterRequest;
 import com.example.springsecuritylivecodingpractice.endpoint.response.MemberResponse;
 import com.example.springsecuritylivecodingpractice.entity.Member;
+import com.example.springsecuritylivecodingpractice.entity.MemberRole;
+import com.example.springsecuritylivecodingpractice.entity.MemberType;
 import com.example.springsecuritylivecodingpractice.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class MemberService {
 			.email(req.getEmail())
 			.password(encoder.encode(req.getPassword()))
 			.nickname(req.getNickname())
+			.type(MemberType.GENERAL)
+			.role(MemberRole.UNCERTIFIED)
 			.build();
 
 		Member createdMember = memberRepository.save(newMember);
